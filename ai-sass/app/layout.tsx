@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
-import { ClerkProvider } from "@clerk/nextjs"
+import { ClerkProvider } from "@clerk/nextjs";
 
 const inter = Inter({ subsets: ["latin"] });
-
 
 export const metadata: Metadata = {
   title: "AI_SASS",
@@ -18,13 +17,11 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-          <html lang="en">
-      <body
-        className={inter.className} 
-      >
-         
-      </body>
-    </html>
+      <html lang="en">
+        <body className={inter.className}>
+          {children} {/* This renders the page's content */}
+        </body>
+      </html>
     </ClerkProvider>
   );
 }

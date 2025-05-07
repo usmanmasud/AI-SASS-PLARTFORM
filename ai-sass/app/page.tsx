@@ -1,7 +1,11 @@
-import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
-export default function page() { 
+
+export default function Home() {
   return (
-       <Button variant="destructive" size="lg">Get Started</Button>
+    <main>
+      <h1>Welcome to AI_SASS</h1>
+      <Link href="/sign-up">Dashboard</Link>
+    </main>
   );
 }
