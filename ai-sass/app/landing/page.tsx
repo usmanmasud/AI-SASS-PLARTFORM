@@ -13,6 +13,6 @@ export default function LandingPage(){
       register
     </Link>
     </Button>
-  </div>;
+  </div>
 };
 
