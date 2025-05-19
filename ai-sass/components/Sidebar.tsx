@@ -18,31 +18,25 @@ const routes = [
   {
     label: "Conversation",
     icon: MessageSquare,
-    href: "/conversation",
+    href: "/dashboard/conversation",
     color: "text-voiler-500",
-  },
-  {
-    label: "Image Generation",
-    icon: ImageIcon,
-    href: "/image",
-    color: "text-pink-700",
   },
   {
     label: "Video Generation",
     icon: VideoIcon,
-    href: "/video",
+    href: "/dashboard/video",
     color: "text-orange-700",
   },
   {
     label: "Music Generation",
     icon: Music,
-    href: "/music",
+    href: "/dashboard/music",
     color: "text-emerald-500",
   },
   {
     label: "Code Generation",
     icon: Code,
-    href: "/code",
+    href: "/dashboard/code",
     color: "text-green-500",
   },
   {
