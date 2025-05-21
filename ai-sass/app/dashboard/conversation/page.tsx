@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Heading } from "@/components/Heading";
 import { MessageSquare } from "lucide-react";
 import { useForm } from "react-hook-form";
@@ -26,6 +26,7 @@ const Conversation = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -33,6 +34,11 @@ const Conversation = () => {
       prompt: "",
     },
   });
+
+  // Auto-scroll to bottom when messages change
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
@@ -82,21 +88,54 @@ const Conversation = () => {
   };
 
   return (
-    <div>
-      <Heading
-        title="Conversation"
-        description="Powered by Google Gemini AI"
-        icon={MessageSquare}
-        iconColor="text-violet-500"
-        bgColor="bg-violet-500/10"
-      />
+    <div className="flex flex-col h-screen">
       <div className="px-4 lg:px-8">
+        <Heading
+          title="Conversation"
+          description="Powered by Google Gemini AI"
+          icon={MessageSquare}
+          iconColor="text-violet-500"
+          bgColor="bg-violet-500/10"
+        />
+      </div>
+
+      <div className="flex-1 overflow-y-auto px-4 lg:px-8">
         {error && (
           <div className="mb-4 p-3 rounded-md bg-red-50 text-red-600">
             {error}
           </div>
         )}
 
+        <div className="space-y-4 mt-4 pb-4">
+          {messages.length === 0 ? (
+            <div className="p-8 text-center text-gray-500">
+              Your conversation will appear here
+            </div>
+          ) : (
+            messages.map((message, index) => (
+              <div
+                key={index}
+                className={`flex gap-3 p-4 rounded-lg ${
+                  message.role === "user" 
+                    ? "bg-gray-50 border border-gray-200" 
+                    : "bg-violet-50 border border-violet-200"
+                }`}
+              >
+                {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
+                <div>
+                  <p className="font-semibold">
+                    {message.role === "user" ? "You" : "Genius AI"}
+                  </p>
+                  <p className="mt-1">{message.content}</p>
+                </div>
+              </div>
+            ))
+          )}
+          <div ref={messagesEndRef} />
+        </div>
+      </div>
+
+      <div className="sticky bottom-0 bg-white border-t p-4 lg:px-8">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
@@ -133,35 +172,6 @@ const Conversation = () => {
             </Button>
           </form>
         </Form>
-
-        <div className="space-y-4 mt-4">
-          <div className="flex flex-col-reverse gap-y-4">
-            {messages.length === 0 ? (
-              <div className="p-8 text-center text-gray-500">
-                Your conversation will appear here
-              </div>
-            ) : (
-              messages.map((message, index) => (
-                <div
-                  key={index}
-                  className={`flex gap-3 p-4 rounded-lg ${
-                    message.role === "user" 
-                      ? "bg-gray-50 border border-gray-200" 
-                      : "bg-violet-50 border border-violet-200"
-                  }`}
-                >
-                  {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
-                  <div>
-                    <p className="font-semibold">
-                      {message.role === "user" ? "You" : "Genius AI"}
-                    </p>
-                    <p className="mt-1">{message.content}</p>
-                  </div>
-                </div>
-              ))
-            )}
-          </div>
-        </div>
       </div>
     </div>
   );

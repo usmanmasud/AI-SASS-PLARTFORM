@@ -21,18 +21,7 @@ const routes = [
     href: "/dashboard/conversation",
     color: "text-voiler-500",
   },
-  {
-    label: "Video Generation",
-    icon: VideoIcon,
-    href: "/dashboard/video",
-    color: "text-orange-700",
-  },
-  {
-    label: "Music Generation",
-    icon: Music,
-    href: "/dashboard/music",
-    color: "text-emerald-500",
-  },
+ 
   {
     label: "Code Generation",
     icon: Code,
